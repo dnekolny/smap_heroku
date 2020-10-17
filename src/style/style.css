@@ -1,0 +1,77 @@
+@charset "UTF-8";
+/* BEM
+Blok	                .block
+Element	                .block__element
+Modifikátor	            .block--modifier
+Modifikátor elementu	.block__element--modifier
+*/
+.d-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.d-none {
+  display: none;
+}
+
+#map {
+  width: 400px;
+  height: 300px;
+}
+
+#pano {
+  width: 1024px;
+  max-width: 100%;
+  height: 800px;
+  max-height: 100%;
+  border: 3px solid #f00;
+  float: left;
+}
+
+#pano .gm-style div:nth-child(2) {
+  display: none !important;
+}
+
+#pano .gm-style .gm-style-cc {
+  display: none !important;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: .4rem 1rem;
+  margin: .2rem;
+  color: #ececec;
+  background: transparent;
+  border: none;
+  border-radius: .25rem;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background: #2f59cc;
+}
+
+.btn--primary:hover {
+  background: #2350cc;
+}
+
+.btn--light {
+  color: #1b1b1b;
+  background: #eeeeee;
+}
+
+.btn--light:hover {
+  background: #e9e9e9;
+}
+/*# sourceMappingURL=style.css.map */

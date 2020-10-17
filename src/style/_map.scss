@@ -1,0 +1,21 @@
+#map {
+    width: 400px;
+    height: 300px;
+}
+
+#pano {
+    width: 1024px;
+    max-width: 100%;
+    height: 800px;
+    max-height: 100%;
+    border: 3px solid #f00;
+    float: left;
+}
+
+#pano .gm-style div:nth-child(2) {
+    display: none !important;
+}
+
+#pano .gm-style .gm-style-cc {
+    display: none !important;
+}

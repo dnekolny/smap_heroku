@@ -1,0 +1,57 @@
+/* BEM
+Blok	                .block
+Element	                .block__element
+Modifikátor	            .block--modifier
+Modifikátor elementu	.block__element--modifier
+*/
+
+$color_primary: rgb(47, 89, 204);
+$color_primary_dark: rgb(35, 80, 204);
+$color_secondary: rgb(83, 202, 99);
+$color_light: rgb(233, 233, 233);
+$color_lighter: rgb(238, 238, 238);
+
+$color_text_heading: rgb(27, 27, 27);
+$color_text_primary: rgb(27, 27, 27);
+$color_text_light: rgb(233, 233, 233);
+$color_text_btn: rgb(27, 27, 27);
+$color_text_btn_light: rgb(236, 236, 236);
+
+@import './utilities';
+@import './map';
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: .4rem 1rem;
+    margin: .2rem;
+    color: $color_text_btn_light;
+    background: transparent;
+    border: none;
+    border-radius: .25rem;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: center;
+    cursor: pointer;
+
+    &--primary {
+        background: $color-primary;
+        &:hover{
+            background: $color-primary-dark;
+        }
+    }
+
+    &--light {
+        color: $color_text_btn;
+        background: $color-lighter;
+        &:hover{
+            background: $color-light;
+        }
+    }
+}
