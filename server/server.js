@@ -1,25 +1,34 @@
-var express = require('express');
-var { graphqlHTTP } = require('express-graphql');
-var {buildSchema} = require('graphql');
+const express = require('express');
+const mongoose = require('mongoose');
+const { ApolloServer, gql } = require('apollo-server-express');
+const resolvers = require('./resolvers')
+const typeDefs = require('./typeDefs.js');
 
-// GraphQL Schema
-var schema = buildSchema(`
-    type Query {
-        message: String
-    }
-`);
+mongoose.connect("mongodb://localhost:27017/smap", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
 
-// Root resolver
-var root = {
-    message: () => 'Hello World!'
-};
+    const app = express();
 
-// Create an express server and GraphQL endpoint
-var app = express();
-app.use('/graphql', graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true
-}));
+    const server = new ApolloServer({
+        typeDefs,
+        resolvers
+    });
 
-app.listen(4000, () => console.log('Express GraphQL server RUNNIG on localhost:4000/graphql'));
+    // enable `cors` to set HTTP response header: Access-Control-Allow-Origin: *
+    //app.use(cors());
+
+    server.applyMiddleware({ app });
+
+    // app.use('/graphql', graphqlHTTP({
+    //     schema: schema,
+    //     rootValue: resolvers,
+    //     graphiql: true
+    // }))
+
+    app.listen(4000, () => {
+        console.log('GraphQL server is running on port 4000!')
+    });
+
+});

@@ -27,6 +27,10 @@ body {
     padding: 0;
 }
 
+.App{
+    padding: 0 10%;
+}
+
 .btn {
     display: inline-block;
     padding: .4rem 1rem;
@@ -42,7 +46,8 @@ body {
 
     &--primary {
         background: $color-primary;
-        &:hover{
+
+        &:hover {
             background: $color-primary-dark;
         }
     }
@@ -50,8 +55,39 @@ body {
     &--light {
         color: $color_text_btn;
         background: $color-lighter;
-        &:hover{
+
+        &:hover {
             background: $color-light;
         }
+    }
+}
+
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+
+    tr {
+        &:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        &:hover {
+            background-color: #ddd;
+        }
+    }
+
+    td,
+    th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #4CAF50;
+        color: white;
     }
 }

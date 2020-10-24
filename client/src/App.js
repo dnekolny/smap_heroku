@@ -1,12 +1,11 @@
 import React from 'react';
-import './App.css';
+import Spots from './components/Spots'
 
-function App() {
-  return (
-    <div className="App">
-      <h1>Hello World!</h1>
-    </div>
-  );
-}
+const App = () => (
+  <div className="App">
+    <h1>Hello World!</h1>
+    <Spots></Spots>
+  </div>
+)
 
 export default App;
