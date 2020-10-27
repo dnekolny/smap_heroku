@@ -48,7 +48,7 @@ export default {
 #screenCanvas {
   width: 1024px;
   max-width: 100%;
-  height: 768px;
+  height: 800px;
   max-height: 100%;
   display: none;
 }

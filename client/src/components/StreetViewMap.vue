@@ -10,7 +10,7 @@ export default {
 
   data() {
     return {
-      apiKey: "AIzaSyCOVFYj3-uJxXDStCkfJM4ekF5GOojaQG4",
+      apiKey: "--AIzaSyCOVFYj3-uJxXDStCkfJM4ekF5GOojaQG4",
       mapConfig: {
         position: {
           lat: 42.345573,

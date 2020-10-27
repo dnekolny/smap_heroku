@@ -1,7 +1,17 @@
 <template>
   <div>
-    <button class="btn btn--secondary" @click="onScanBtnClicked">{{ scanBtnTitle }}</button>
-    <button class="btn btn--light" @click="captureImage" :disabled="captureBtnDisabled">
+    <button v-if="scanning" class="btn btn--danger" @click="stopScanning">
+      Stop scanning
+    </button>
+    <button v-else class="btn btn--secondary" @click="startScanning">
+      Start scanning
+    </button>
+    <button
+      class="btn"
+      v-bind:class="{ 'btn--light': !scanning, 'btn--secondary': scanning }"
+      @click="captureImage"
+      v-bind:disabled="!scanning"
+    >
       Capture Image
     </button>
   </div>
@@ -13,8 +23,8 @@ export default {
 
   data() {
     return {
+      scanning: false,
       scanBtnTitle: "Start scanning",
-      onScanBtnClicked: this.btnStartScanClick,
       captureBtnDisabled: true,
       mediaStream: null,
       imageCapture: null,
@@ -22,47 +32,39 @@ export default {
   },
 
   methods: {
-    async btnStartScanClick() {
-      await this.startScanning();
-      this.captureBtnDisabled = false;
-      this.scanBtnTitle = "Stop scanning";
-      this.onScanBtnClicked = this.btnStopScanClick;
-    },
-
-    async btnStopScanClick() {
-      await this.stopScanning();
-      this.captureBtnDisabled = true;
-      this.scanBtnTitle = "Start scanning";
-      this.onScanBtnClicked = this.btnStartScanClick;
-    },
-
     async startScanning() {
-      const displayMediaOptions = {
-        video: {
-          cursor: "never",
-        },
-        audio: false,
-      };
-
-      this.mediaStream = await navigator.mediaDevices.getDisplayMedia(
-        displayMediaOptions
-      );
-
-      const track = this.mediaStream.getVideoTracks()[0];
-      console.log("TRACK:");
-      console.log(track);
-
       try {
+        const displayMediaOptions = {
+          video: {
+            cursor: "never",
+          },
+          audio: false,
+        };
+
+        this.mediaStream = await navigator.mediaDevices.getDisplayMedia(
+          displayMediaOptions
+        );
+
+        const track = this.mediaStream.getVideoTracks()[0];
         this.imageCapture = new ImageCapture(track);
-        console.log("IMAGE CAPTURE:");
-        console.log(this.imageCapture);
+
+        this.scanning = true;
       } catch (err) {
-        console.log("ERROR - new ImageCapture(track):");
+        console.log("ERROR in startScanning():");
         console.log(err);
       }
     },
 
-    async stopScanning() {},
+    async stopScanning() {
+      try{
+      this.mediaStream.getTracks().forEach((track) => track.stop());
+      this.scanning = false;
+      }
+      catch(err){
+        console.log("ERROR in stopScanning()");
+        console.log(err);
+      }
+    },
 
     captureImage() {
       this.imageCapture
@@ -86,19 +88,17 @@ export default {
       /*let x = (canvas.width - img.width * ratio) / 2;
       let y = (canvas.height - img.height * ratio) / 2;*/
       canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-      canvas
-        .getContext("2d")
-        .drawImage(
-          img,
-          0,
-          0,
-          1024,//img.width,
-          768,//img.height,
-          0,//x,
-          0,//y,
-          1024,//img.width * ratio,
-          768//img.height * ratio*/
-        );
+      canvas.getContext("2d").drawImage(
+        img,
+        0,
+        0,
+        1024, //img.width,
+        768, //img.height,
+        0, //x,
+        0, //y,
+        1024, //img.width * ratio,
+        768 //img.height * ratio*/
+      );
     },
   },
 };
