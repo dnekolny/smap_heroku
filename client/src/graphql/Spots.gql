@@ -1,0 +1,18 @@
+query spots {
+  spots {
+    _id
+    name
+    lat
+    lng
+    img {
+      data
+      contentType
+    }
+    containers {
+      _id
+      contType
+      count
+      probability
+    }
+  }
+}
