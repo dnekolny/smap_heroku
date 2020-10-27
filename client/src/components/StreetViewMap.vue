@@ -38,22 +38,6 @@ export default {
   },
 
   methods: {
-    processSVData(data, status) {
-      console.log(data);
-      console.log(status);
-      if (status === "OK") {
-        const location = data.location;
-
-        this.panorama.setPano(location.pano);
-        this.panorama.setPov({
-          heading: Math.floor(Math.random() * 361), //0 - 360
-          pitch: -10,
-        });
-        this.panorama.setVisible(true);
-      } else {
-        console.error("Street View data not found for this location.");
-      }
-    },
     initializeMap() {
       const panoContainer = this.$refs.googleMap;
 
@@ -76,6 +60,22 @@ export default {
         this.processSVData
       );
     },
+    processSVData(data, status) {
+    //   console.log(data);
+    //   console.log(status);
+      if (status === "OK") {
+        const location = data.location;
+
+        this.panorama.setPano(location.pano);
+        this.panorama.setPov({
+          heading: Math.floor(Math.random() * 361), //0 - 360
+          pitch: -10,
+        });
+        this.panorama.setVisible(true);
+      } else {
+        console.error("Street View data not found for this location.");
+      }
+    },
   },
 };
 </script>
@@ -86,6 +86,14 @@ export default {
   max-width: 100%;
   height: 800px;
   max-height: 100%;
-  border: 3px solid #f00;
 }
+
+#pano .gm-style > div {
+    display: none !important;
+}
+
+#pano .gm-style > div:first-child {
+    display: block !important;
+}
+
 </style>
