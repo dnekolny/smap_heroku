@@ -4,6 +4,7 @@ module.exports = gql`
     type Query {
         spot(_id:ID!): Spot
         spots: [Spot]
+        randomCoords: [Coord]
     }
 
     type Spot {
@@ -44,6 +45,11 @@ module.exports = gql`
         contType: ContainerType
         count: Int
         probability: Float
+    }
+
+    type Coord {
+        lat: Float
+        lng: Float
     }
 
     enum ContainerType {
