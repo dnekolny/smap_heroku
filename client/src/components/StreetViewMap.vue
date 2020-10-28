@@ -83,9 +83,9 @@ export default {
 <style lang="scss">
 #pano {
   width: 1024px;
-  max-width: 100%;
+  min-width: 1024px;
   height: 800px;
-  max-height: 100%;
+  min-height: 800px;
 }
 
 #pano .gm-style > div {

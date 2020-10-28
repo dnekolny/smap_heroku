@@ -1,0 +1,79 @@
+.btn {
+  display: inline-block;
+  padding: .35rem .95rem;
+  margin: .2rem;
+  color: $color_text_white;
+  background: $color_primary;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: .95rem;
+  font-weight: 400;
+  text-align: center;
+  cursor: pointer;
+
+  &--lg{
+    padding: .45rem 4rem;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &--primary {
+    background: $color_primary;
+    &:hover {
+      background: $color_primary_dark;
+    }
+    &:disabled{
+      background: $color_primary_light;
+    }
+  }
+
+  &--light {
+    color: $color_text_black;
+    background: $color_lighter;
+    &:hover {
+      background: $color_light;
+    }
+    &:disabled{
+      color: $color_text_gray;
+      background: $color_lighter;
+    }
+  }
+
+  &--secondary {
+    background: $color_secondary;
+    &:hover {
+      background: $color_secondary_dark;
+    }
+    &:disabled{
+      color: $color_text_light;
+      background: $color_secondary_light;
+    }
+  }
+
+  &--danger {
+    background: $color_danger;
+    &:hover {
+      background: $color_danger_dark;
+    }
+    &:disabled{
+      color: $color_text_light;
+      background: $color_danger;
+    }
+  }
+}
+
+input[type='file']::-webkit-file-upload-button {
+  @extend .btn, .btn--primary;
+}
+
+input[type='file'] {
+  cursor: pointer;
+  color: $color_text_dark;
+  font-size: 0.85em;
+
+  &:hover{
+    color: $color_text_black;
+  }
+}

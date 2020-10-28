@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-inline-flex">
     <button v-if="scanning" class="btn btn--danger" @click="stopScanning">
       Stop scanning
     </button>

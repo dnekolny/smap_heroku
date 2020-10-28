@@ -1,0 +1,27 @@
+// Backgroud Color
+$color_primary: rgb(47, 89, 204);
+$color_primary_dark: rgb(32, 74, 187);
+$color_primary_light: rgb(157, 171, 206);
+$color_secondary: rgb(42, 204, 63);
+$color_secondary_dark: rgb(31, 182, 51);
+$color_secondary_light: rgb(107, 199, 119);
+$color_light: rgb(233, 233, 233);
+$color_lighter: rgb(238, 238, 238);
+$color_danger: rgb(192, 47, 47);
+$color_danger_dark: rgb(170, 39, 39);
+
+//Text Color
+$color_text_heading: rgb(27, 27, 27);
+$color_text_primary: rgb(27, 27, 27);
+$color_text_black: rgb(12, 12, 12);
+$color_text_dark: rgb(59, 59, 59);
+$color_text_gray: rgb(156, 156, 156);
+$color_text_light: rgb(226, 226, 226);
+$color_text_white: rgb(255, 255, 255);
+
+//Media queries 
+//@media (min-width: $media_sm) {}
+$media_sm: 576px;
+$media_md: 768px;
+$media_lg: 992px;
+$media_xl: 1200px;
