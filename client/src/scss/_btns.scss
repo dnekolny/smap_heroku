@@ -1,18 +1,26 @@
+/*
+Typ třídy	            Způsob pojmenovávání
+Blok	                .block
+Element	              .block__element
+Modifikátor	          .block--modifier
+Modifikátor elementu	.block__element--modifier
+*/
+
 .btn {
   display: inline-block;
-  padding: .35rem .95rem;
-  margin: .2rem;
+  padding: 0.35rem 0.95rem;
+  margin: 0.2rem;
   color: $color_text_white;
   background: $color_primary;
   border: none;
   border-radius: 0.25rem;
-  font-size: .95rem;
+  font-size: 0.95rem;
   font-weight: 400;
   text-align: center;
   cursor: pointer;
 
-  &--lg{
-    padding: .45rem 4rem;
+  &--lg {
+    padding: 0.45rem 4rem;
   }
 
   &:disabled {
@@ -22,9 +30,10 @@
   &--primary {
     background: $color_primary;
     &:hover {
-      background: $color_primary_dark;
+      background: darken($color_primary, $bg_hover_darken);
+      //background: $color_primary_dark;
     }
-    &:disabled{
+    &:disabled {
       background: $color_primary_light;
     }
   }
@@ -33,9 +42,10 @@
     color: $color_text_black;
     background: $color_lighter;
     &:hover {
-      background: $color_light;
+      background: darken($color_lighter, $bg_hover_darken);
+      //background: $color_light;
     }
-    &:disabled{
+    &:disabled {
       color: $color_text_gray;
       background: $color_lighter;
     }
@@ -44,9 +54,10 @@
   &--secondary {
     background: $color_secondary;
     &:hover {
-      background: $color_secondary_dark;
+      background: darken($color_secondary, $bg_hover_darken);
+      //background: $color_secondary_dark;
     }
-    &:disabled{
+    &:disabled {
       color: $color_text_light;
       background: $color_secondary_light;
     }
@@ -55,25 +66,26 @@
   &--danger {
     background: $color_danger;
     &:hover {
-      background: $color_danger_dark;
+      background: darken($color_danger, $bg_hover_darken);
+      //background: $color_danger_dark;
     }
-    &:disabled{
+    &:disabled {
       color: $color_text_light;
       background: $color_danger;
     }
   }
 }
 
-input[type='file']::-webkit-file-upload-button {
+input[type="file"]::-webkit-file-upload-button {
   @extend .btn, .btn--primary;
 }
 
-input[type='file'] {
+input[type="file"] {
   cursor: pointer;
   color: $color_text_dark;
   font-size: 0.85em;
 
-  &:hover{
+  &:hover {
     color: $color_text_black;
   }
 }

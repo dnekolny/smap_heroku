@@ -11,10 +11,19 @@
         <label for="imgInput">Z disku:</label>
         <ImageInput v-on:imgInputChanged="imgChanged" />
       </div>
-      <img id="preview" :src="image" alt="Image preview...">
+      <img
+        id="preview"
+        v-if="this.spot.img.data"
+        :src="this.spot.img.data"
+        alt="Image preview..."
+      />
+      <CategoryButtonList
+        v-bind:containers="spot.containers"
+        v-on:container-changed="onContainerChanged"
+      />
       <div class="text-center">
         <button
-          v-bind:disabled="!image"
+          v-bind:disabled="!this.spot.img.data"
           class="btn btn--lg btn--secondary"
           @click="btnSaveClick"
         >
@@ -30,45 +39,79 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import StreetViewMap from "../components/StreetViewMap";
 import ScreenScan from "../components/ScreenScan";
 import ImageInput from "../components/ImageInput";
+import CategoryButtonList from "../components/CategoryButtonList";
+import ContainerType from "../enums/ContainerType";
 
 export default {
   name: "Home",
   components: {
     StreetViewMap,
     ScreenScan,
-    ImageInput
+    ImageInput,
+    CategoryButtonList,
   },
 
   data() {
     return {
-      image: null,
+      spot: {
+        name: null,
+        lat: null,
+        lng: null,
+        img: {
+          data: null,
+          contentType: null,
+        },
+        containers: [],
+      },
     };
   },
 
   mounted() {
+    this.initContainers();
+
+    //nastavuje velikost canvasu na velikost obrazovky
     var canvas = document.getElementById("screenCanvas");
     canvas.height = window.screen.height;
     canvas.width = window.screen.width;
-    console.log(canvas);
   },
 
   methods: {
+    //vygeneruje všechny typy kontejnerů s počtem 0
+    initContainers() {
+      Object.keys(ContainerType).map((key) => {
+        this.spot.containers = [
+          ...this.spot.containers,
+          {
+            contType: key,
+            count: 0,
+            probability: 1,
+          },
+        ];
+      });
+    },
     btnSaveClick() {
-      console.log("btn CLICKED");
+      console.log("btn SAVE CLICKED");
     },
     imgChanged(img) {
-      this.image = img;
-      console.log(this.image);
+      this.spot.img.data = img;
+    },
+    onContainerChanged(container) {
+      const index = this.spot.containers
+        .map((c) => c.contType)
+        .indexOf(container.contType);
+      if (index >= 0)
+        //this.spot.containers[index] = container;
+        Vue.set(this.spot.containers, index, container);
     },
   },
 };
 </script>
 
 <style lang="scss">
-
 .home {
   display: flex;
   flex-wrap: nowrap;
@@ -86,6 +129,6 @@ export default {
 }
 
 .rightPanel {
-  margin: 1rem 1.5rem;
+  margin: 1rem 0 1rem 1rem;
 }
 </style>
