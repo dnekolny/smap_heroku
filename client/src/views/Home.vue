@@ -1,26 +1,61 @@
 <template>
   <div class="home">
-    <StreetViewMap />
+    <!-- STREET VIEW -->
+    <StreetViewMap ref="map" v-on:position-changed="onStreetViewPositionChanged" />
+
     <div class="rightPanel">
       <h4>Výběr obrázku:</h4>
+
+      <!-- SCREEN SCAN -->
       <div class="mb-3 ml-2">
         <label>Ze Street View:</label>
-        <ScreenScan v-on:imgCaptured="imgChanged" />
+        <ScreenScan
+          v-on:scanningStart="onScanningStart"
+          v-on:imgCaptured="imgChanged"
+        />
       </div>
+
+      <!-- IMAGE INPUT -->
       <div class="mb-3 ml-2">
         <label for="imgInput">Z disku:</label>
         <ImageInput v-on:imgInputChanged="imgChanged" />
       </div>
+
+      <!-- PREVIEW -->
       <img
         id="preview"
         v-if="this.spot.img.data"
         :src="this.spot.img.data"
         alt="Image preview..."
       />
+      <div id="emptyPreview" v-else><p>Image Preview...</p></div>
+
+      <!-- COORDS -->
+      <table class="table-coords">
+        <tr>
+          <td><label for="latInput">Latitude:</label></td>
+          <td><label for="lngInput">Longitude:</label></td>
+        </tr>
+        <tr>
+          <td>
+            <input type="number" class="w-100" name="latInput" v-model="spot.lat" />
+          </td>
+          <td>
+            <input type="number" class="w-100" name="lngInput" v-model="spot.lng" />
+          </td>
+        </tr>
+        <tr>
+          <td><button class="btn btn--light" @click="btnRefreshMapClick">Refresh Map</button></td>
+        </tr>
+      </table>
+
+      <!-- CATEGORIES -->
       <CategoryButtonList
         v-bind:containers="spot.containers"
         v-on:container-changed="onContainerChanged"
       />
+
+      <!-- SAVE & CANVEL -->
       <div class="text-center">
         <button
           v-bind:disabled="!this.spot.img.data"
@@ -29,8 +64,13 @@
         >
           Save
         </button>
+        <button class="btn btn--light" @click="btnCancelClick">
+          Cancel
+        </button>
       </div>
     </div>
+
+    <Snackbar ref="snackbar" message="Spot Succesfully Saved!" />
 
     <div>
       <canvas id="screenCanvas"></canvas>
@@ -44,6 +84,7 @@ import StreetViewMap from "../components/StreetViewMap";
 import ScreenScan from "../components/ScreenScan";
 import ImageInput from "../components/ImageInput";
 import CategoryButtonList from "../components/CategoryButtonList";
+import Snackbar from "../components/Snackbar";
 import ContainerType from "../enums/ContainerType";
 
 export default {
@@ -53,14 +94,16 @@ export default {
     ScreenScan,
     ImageInput,
     CategoryButtonList,
+    Snackbar,
   },
 
   data() {
     return {
+      googleApiKey: "AIzaSyDu3_Dr5AqqF2SwVpUyVeE_E7m3ZNUI49o",
       spot: {
         name: null,
-        lat: null,
-        lng: null,
+        lat: 0.0,
+        lng: 0.0,
         img: {
           data: null,
           contentType: null,
@@ -80,20 +123,9 @@ export default {
   },
 
   methods: {
-    //vygeneruje všechny typy kontejnerů s počtem 0
-    initContainers() {
-      Object.keys(ContainerType).map((key) => {
-        this.spot.containers = [
-          ...this.spot.containers,
-          {
-            contType: key,
-            count: 0,
-            probability: 1,
-          },
-        ];
-      });
+    onScanningStart() {
+      this.$refs.map.initMap(this.googleApiKey);
     },
-
     imgChanged(img) {
       this.spot.img.data = img;
     },
@@ -107,7 +139,7 @@ export default {
     },
     btnSaveClick() {
       console.log("btn SAVE CLICKED");
-      
+
       this.$apollo
         .mutate({
           // Query
@@ -118,11 +150,49 @@ export default {
           },
         })
         .then((data) => {
+          this.$refs.snackbar.show();
+          this.clearSpot();
           console.log(data);
         })
         .catch((error) => {
           console.error(error);
         });
+    },
+    btnCancelClick() {
+      this.clearSpot();
+    },
+    btnRefreshMapClick(){
+      this.$refs.map.changePosition(this.spot.lat, this.spot.lng);
+    },
+    onStreetViewPositionChanged(lat, lng){
+      this.spot.lat = lat;
+      this.spot.lng = lng;
+    },
+    clearSpot() {
+      this.spot = {
+        name: null,
+        lat: null,
+        lng: null,
+        img: {
+          data: null,
+          contentType: null,
+        },
+        containers: [],
+      };
+      this.initContainers();
+    },
+    //vygeneruje všechny typy kontejnerů s počtem 0
+    initContainers() {
+      Object.keys(ContainerType).map((key) => {
+        this.spot.containers = [
+          ...this.spot.containers,
+          {
+            contType: key,
+            count: 0,
+            probability: 1,
+          },
+        ];
+      });
     },
   },
 };
@@ -145,7 +215,30 @@ export default {
   width: 100%;
 }
 
+#emptyPreview {
+  display: flex;
+  width: 100%;
+  height: 300px;
+  background: $color_light;
+  color: $color_text_gray;
+  margin-bottom: 0.8rem;
+
+  p {
+    margin: auto auto;
+  }
+}
+
 .rightPanel {
   margin: 1rem 0 1rem 1rem;
+}
+
+.table-coords {
+  width: 100%;
+  margin-bottom: 0.8rem;
+
+  td,
+  th {
+    padding: 0 10px;
+  }
 }
 </style>

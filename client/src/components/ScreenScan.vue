@@ -33,6 +33,7 @@ export default {
 
   methods: {
     async startScanning() {
+      
       try {
         const displayMediaOptions = {
           video: {
@@ -49,6 +50,7 @@ export default {
         this.imageCapture = new ImageCapture(track);
 
         this.scanning = true;
+        this.$emit('scanningStart');
       } catch (err) {
         console.log("ERROR in startScanning():");
         console.log(err);

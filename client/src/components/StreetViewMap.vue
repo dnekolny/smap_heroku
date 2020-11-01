@@ -10,11 +10,10 @@ export default {
 
   data() {
     return {
-      apiKey: "--AIzaSyCOVFYj3-uJxXDStCkfJM4ekF5GOojaQG4",
       mapConfig: {
         position: {
-          lat: 42.345573,
-          lng: -71.098326,
+          lat: 50.2000003,
+          lng: 15.8525732,
         },
         addressControl: false,
         zoomControl: false,
@@ -26,33 +25,47 @@ export default {
       },
       panorama: null,
       google: null,
+      svService: null,
     };
   },
 
-  async mounted() {
-    const googleMapApi = await GoogleMapsApiLoader({
-      apiKey: this.apiKey,
-    });
-    this.google = googleMapApi;
-    this.initializeMap();
-  },
-
   methods: {
-    initializeMap() {
-      const panoContainer = this.$refs.googleMap;
+    async initMap(apiKey) {
+      console.log(apiKey);
+      const googleMapApi = await GoogleMapsApiLoader({
+        apiKey: "AIzaSyDu3_Dr5AqqF2SwVpUyVeE_E7m3ZNUI49o",
+      });
+      this.google = googleMapApi;
 
-      const coord = {
-        lat: 50.08394,
-        lng: 15.67348,
-      };
-      const sv = new this.google.maps.StreetViewService();
+      this.svService = new this.google.maps.StreetViewService();
       this.panorama = new this.google.maps.StreetViewPanorama(
-        panoContainer,
+        this.$refs.googleMap,
         this.mapConfig
       );
 
-      // Set the initial Street View camera to the center of the map
-      sv.getPanorama(
+      this.panorama.addListener("position_changed", () => {
+        this.$emit(
+          "position-changed",
+          this.panorama.getPosition().lat(),
+          this.panorama.getPosition().lng()
+        );
+        console.log(this.panorama.getPosition().lat() + "");
+      });
+    },
+    changePosition(lat, lng) {
+      var coord = this.mapConfig.position;
+      if (lat && lng) {
+        lat = parseFloat(lat);
+        lng = parseFloat(lng);
+        if (!isNaN(lat) && !isNaN(lng)) {
+          coord = {
+            lat: parseFloat(lat),
+            lng: parseFloat(lng),
+          };
+        }
+      }
+      console.log(coord);
+      this.svService.getPanorama(
         {
           location: coord,
           radius: 200,
@@ -61,8 +74,8 @@ export default {
       );
     },
     processSVData(data, status) {
-    //   console.log(data);
-    //   console.log(status);
+      //   console.log(data);
+      //   console.log(status);
       if (status === "OK") {
         const location = data.location;
 
@@ -89,11 +102,10 @@ export default {
 }
 
 #pano .gm-style > div {
-    display: none !important;
+  display: none !important;
 }
 
 #pano .gm-style > div:first-child {
-    display: block !important;
+  display: block !important;
 }
-
 </style>
