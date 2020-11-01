@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 import StreetViewMap from "../components/StreetViewMap";
 import ScreenScan from "../components/ScreenScan";
 import ImageInput from "../components/ImageInput";
@@ -93,9 +93,7 @@ export default {
         ];
       });
     },
-    btnSaveClick() {
-      console.log("btn SAVE CLICKED");
-    },
+
     imgChanged(img) {
       this.spot.img.data = img;
     },
@@ -106,6 +104,25 @@ export default {
       if (index >= 0)
         //this.spot.containers[index] = container;
         Vue.set(this.spot.containers, index, container);
+    },
+    btnSaveClick() {
+      console.log("btn SAVE CLICKED");
+      
+      this.$apollo
+        .mutate({
+          // Query
+          mutation: require("../graphql/AddSpot.gql"),
+          // Parameters
+          variables: {
+            spot: this.spot,
+          },
+        })
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     },
   },
 };

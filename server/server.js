@@ -19,7 +19,12 @@ mongoose.connect("mongodb://localhost:27017/smap", {
     // enable `cors` to set HTTP response header: Access-Control-Allow-Origin: *
     //app.use(cors());
 
-    server.applyMiddleware({ app });
+    server.applyMiddleware({
+        app: app,
+        bodyParserConfig: {
+            limit: '100mb', // Your Limited Here
+        }
+    });
 
     // app.use('/graphql', graphqlHTTP({
     //     schema: schema,

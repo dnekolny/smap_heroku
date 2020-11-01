@@ -13,38 +13,28 @@
           <thead>
             <tr>
               <th colSpan="4">Spot</th>
-              <th colSpan="2">Image</th>
-              <th colSpan="3">Containers</th>
+              <th colSpan="1">Image</th>
+              <th colSpan="12">Containers</th>
             </tr>
             <tr>
               <th>ID</th>
               <th>Name</th>
               <th>Latitude</th>
               <th>Longitude</th>
-              <th>Data</th>
               <th>Content type</th>
-              <th>Type</th>
-              <th>Count</th>
-              <th>Probability</th>
+              <th v-for="type in types" :key="type">{{ type }}</th>
             </tr>
           </thead>
           <tbody>
             <template v-for="s of data.spots">
               <tr :key="s._id">
-                <td>{{s._id}}</td>
-                <td>{{s.name}}</td>
-                <td>{{s.lat}}</td>
-                <td>{{s.lng}}</td>
-                <td>{{s.img.data}}</td>
-                <td>{{s.img.contentType}}</td>
-                <td colSpan="3"></td>
+                <td>{{ s._id }}</td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.lat }}</td>
+                <td>{{ s.lng }}</td>
+                <td>{{ s.img.contentType }}</td>
+                <td v-for="c in s.containers" :key="c._id">{{ c.count }}</td>
               </tr>
-              <tr v-for="c in s.containers" :key="c._id">
-                <td colSpan="6"></td>
-                <td>{{c.contType}}</td>
-                <td>{{c.count}}</td>
-                <td>{{c.probability}}</td>
-              </tr> 
             </template>
           </tbody>
         </table>
@@ -57,8 +47,21 @@
 </template>
 
 <script>
+import ContainerType from "../enums/ContainerType";
+
 export default {
   name: "SpotList",
+  data() {
+    return {
+      types: [],
+    };
+  },
+
+  mounted() {
+    Object.keys(ContainerType).map((key) => {
+      this.types = [...this.types, key];
+    });
+  },
 };
 </script>
 

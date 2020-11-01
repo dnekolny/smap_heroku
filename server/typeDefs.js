@@ -66,8 +66,13 @@ module.exports = gql`
         MIXED
     }
 
+    type Message {
+        text: String
+    }
+
     type Mutation {
-        createSpot(spot: SpotInput): Spot
+        addSpot(spot: SpotInput!): Spot
+        addTest(message: String!): Message
     }
 `;
 

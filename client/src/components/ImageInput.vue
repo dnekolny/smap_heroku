@@ -29,7 +29,7 @@ export default {
   methods: {
     ImageChange(event) {
       this.image = event.target.files[0];
-      console.log(this.image);
+      //console.log(this.image);
 
       reader.addEventListener(
         "load",
@@ -43,7 +43,7 @@ export default {
       reader.readAsDataURL(this.image);
     },
     OnReaderLoad() {
-      console.log(reader.result);
+      //console.log(reader.result);
       this.$emit("imgInputChanged", reader.result);
     },
   },

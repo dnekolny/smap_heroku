@@ -28,13 +28,11 @@ export default {
         this.emitContainer(this.container.count - 1);
     },
     emitContainer(newCount) {
-      console.log(newCount);
       var newCont = {
         contType: this.container.contType,
         count: newCount,
         probability: this.container.probability,
       }
-      console.log(newCont)
       this.$emit("container-changed", newCont);
     },
   },

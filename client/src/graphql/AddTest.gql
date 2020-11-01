@@ -1,0 +1,5 @@
+mutation addTest($message: String!) {
+  addTest(message: $message) {
+    text
+  }
+}

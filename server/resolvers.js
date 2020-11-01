@@ -38,8 +38,10 @@ module.exports = {
         }
     },
     Mutation: {
-        createSpot: async (_, { spot }) => {
+        addSpot: async (_, { spot }) => {
+            console.log(spot);
             const newSpot = new MSpot(spot);
+            console.log(newSpot);
             try {
                 await newSpot.save();
             }
@@ -49,6 +51,10 @@ module.exports = {
             }
             const s = spotToGqlObject(newSpot);
             return s;
+        },
+        addTest: (_, { message }) => {
+            console.log(message);
+            return { text: message };
         }
     }
 };

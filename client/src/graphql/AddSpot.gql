@@ -1,10 +1,11 @@
-query spots {
-  spots {
+mutation addSpot($spot: SpotInput!) {
+  addSpot(spot: $spot) {
     _id
     name
     lat
     lng
     img {
+      data
       contentType
     }
     containers {
