@@ -73,7 +73,7 @@ $categoryImgList: "plastic.png", "color_glass.png", "clear_glass.png",
   .category-#{$cat} {
     background: nth($categoryColorList, $i);
 
-    @if $i == 0 or $i == 2 {
+    @if $i == 1 or $i == 3 {
       color: $color_text_black;
     } @else {
       color: $color_text_white;

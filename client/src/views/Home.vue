@@ -1,14 +1,17 @@
 <template>
   <div class="home">
     <!-- STREET VIEW -->
-    <StreetViewMap ref="map" v-on:position-changed="onStreetViewPositionChanged" />
+    <StreetViewMap
+      ref="map"
+      v-on:position-changed="onStreetViewPositionChanged"
+    />
 
     <div class="rightPanel">
-      <h4>Výběr obrázku:</h4>
+      <h4>Choose image:</h4>
 
       <!-- SCREEN SCAN -->
       <div class="mb-3 ml-2">
-        <label>Ze Street View:</label>
+        <label>Street View:</label>
         <ScreenScan
           v-on:scanningStart="onScanningStart"
           v-on:imgCaptured="imgChanged"
@@ -17,7 +20,7 @@
 
       <!-- IMAGE INPUT -->
       <div class="mb-3 ml-2">
-        <label for="imgInput">Z disku:</label>
+        <label for="imgInput">Disk:</label>
         <ImageInput v-on:imgInputChanged="imgChanged" />
       </div>
 
@@ -35,17 +38,33 @@
         <tr>
           <td><label for="latInput">Latitude:</label></td>
           <td><label for="lngInput">Longitude:</label></td>
+          <td rowspan="2">
+            <button
+              class="btn btn--light"
+              @click="btnRefreshMapClick"
+              v-bind:disabled="!isMapInit"
+            >
+              Refresh Map
+            </button>
+          </td>
         </tr>
         <tr>
           <td>
-            <input type="number" class="w-100" name="latInput" v-model="spot.lat" />
+            <input
+              type="number"
+              class="w-100"
+              name="latInput"
+              v-model="spot.lat"
+            />
           </td>
           <td>
-            <input type="number" class="w-100" name="lngInput" v-model="spot.lng" />
+            <input
+              type="number"
+              class="w-100"
+              name="lngInput"
+              v-model="spot.lng"
+            />
           </td>
-        </tr>
-        <tr>
-          <td><button class="btn btn--light" @click="btnRefreshMapClick">Refresh Map</button></td>
         </tr>
       </table>
 
@@ -100,6 +119,7 @@ export default {
   data() {
     return {
       googleApiKey: "AIzaSyDu3_Dr5AqqF2SwVpUyVeE_E7m3ZNUI49o",
+      isMapInit: false,
       spot: {
         name: null,
         lat: 0.0,
@@ -125,6 +145,7 @@ export default {
   methods: {
     onScanningStart() {
       this.$refs.map.initMap(this.googleApiKey);
+      this.isMapInit = true;
     },
     imgChanged(img) {
       this.spot.img.data = img;
@@ -161,10 +182,10 @@ export default {
     btnCancelClick() {
       this.clearSpot();
     },
-    btnRefreshMapClick(){
+    btnRefreshMapClick() {
       this.$refs.map.changePosition(this.spot.lat, this.spot.lng);
     },
-    onStreetViewPositionChanged(lat, lng){
+    onStreetViewPositionChanged(lat, lng) {
       this.spot.lat = lat;
       this.spot.lng = lng;
     },
@@ -234,11 +255,12 @@ export default {
 
 .table-coords {
   width: 100%;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.7rem;
+  border-spacing: 0;
 
   td,
   th {
-    padding: 0 10px;
+    padding: 0 5px;
   }
 }
 </style>

@@ -6,6 +6,7 @@
       id="imgInput"
       accept="image/*"
       @change="ImageChange"
+      data-buttonText="Your label here."
     />
   </div>
 </template>

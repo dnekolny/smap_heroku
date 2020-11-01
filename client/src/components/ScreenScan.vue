@@ -1,10 +1,10 @@
 <template>
-  <div class="d-inline-flex">
+  <div class="d-inline-flex w-100">
     <button v-if="scanning" class="btn btn--danger" @click="stopScanning">
       Stop scanning
     </button>
     <button v-else class="btn btn--secondary" @click="startScanning">
-      Start scanning
+      Init map & Start scanning
     </button>
     <button
       class="btn"

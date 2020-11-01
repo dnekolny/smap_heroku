@@ -1,5 +1,5 @@
 <template>
-  <div id="pano" ref="googleMap"></div>
+  <div id="pano" ref="googleMap"><p>Street view map.. (click on init button)</p></div>
 </template>
 
 <script>
@@ -95,10 +95,17 @@ export default {
 
 <style lang="scss">
 #pano {
+  display: flex;
   width: 1024px;
   min-width: 1024px;
   height: 800px;
   min-height: 800px;
+  background: $color_light;
+  color: $color_text_gray;
+
+  p{
+    margin: auto;
+  }
 }
 
 #pano .gm-style > div {
