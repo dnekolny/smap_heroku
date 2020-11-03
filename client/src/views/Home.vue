@@ -118,7 +118,6 @@ export default {
 
   data() {
     return {
-      googleApiKey: "AIzaSyDu3_Dr5AqqF2SwVpUyVeE_E7m3ZNUI49o",
       isMapInit: false,
       spot: {
         name: null,
@@ -144,7 +143,7 @@ export default {
 
   methods: {
     onScanningStart() {
-      this.$refs.map.initMap(this.googleApiKey);
+      this.$refs.map.initMap();
       this.isMapInit = true;
     },
     imgChanged(img) {

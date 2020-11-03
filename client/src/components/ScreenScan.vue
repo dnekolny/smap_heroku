@@ -23,34 +23,53 @@ export default {
 
   data() {
     return {
+      displayMediaOptions: {
+        video: {
+          cursor: "never",
+        },
+        audio: false,
+      },
       scanning: false,
       scanBtnTitle: "Start scanning",
       captureBtnDisabled: true,
       mediaStream: null,
+      //track: null,
       imageCapture: null,
+      prevImgPromise: null,
     };
   },
 
   methods: {
     async startScanning() {
-      
       try {
-        const displayMediaOptions = {
-          video: {
-            cursor: "never",
-          },
-          audio: false,
-        };
-
         this.mediaStream = await navigator.mediaDevices.getDisplayMedia(
-          displayMediaOptions
+          this.displayMediaOptions
         );
 
         const track = this.mediaStream.getVideoTracks()[0];
+
+        track.addEventListener(
+          "mute",
+          (event) => {
+            console.log("TRACK MUTE!");
+            console.log(event);
+          },
+          false
+        );
+
+        track.addEventListener(
+          "unmute",
+          (event) => {
+            console.log("TRACK UNMUTE!");
+            console.log(event);
+          },
+          false
+        );
+
         this.imageCapture = new ImageCapture(track);
 
         this.scanning = true;
-        this.$emit('scanningStart');
+        this.$emit("scanningStart");
       } catch (err) {
         console.log("ERROR in startScanning():");
         console.log(err);
@@ -58,28 +77,56 @@ export default {
     },
 
     async stopScanning() {
-      try{
-      this.mediaStream.getTracks().forEach((track) => track.stop());
-      this.scanning = false;
-      }
-      catch(err){
+      try {
+        this.mediaStream.getTracks().forEach((track) => track.stop());
+        this.scanning = false;
+      } catch (err) {
         console.log("ERROR in stopScanning()");
         console.log(err);
       }
     },
 
-    captureImage() {
-      this.imageCapture
-        .grabFrame()
-        .then((imageBitmap) => {
-          const canvas = document.querySelector("#screenCanvas");
-          this.drawCanvas(canvas, imageBitmap);
-          var url = canvas.toDataURL("image/png");
-          this.$emit("imgCaptured", url);
-        })
-        .catch((error) => console.log(error));
-    },
+    async captureImage() {
+      console.log(this.imageCapture.track.muted);
+      //const promise = this.prevImgPromise;
+      //console.log(promise);
 
+      if (
+        //!promise &&
+        !(
+          this.imageCapture.track.readyState != "live" ||
+          !this.imageCapture.track.enabled ||
+          this.imageCapture.track.muted
+        )
+      ) {
+        this.imageCapture //const imgPromise =
+          .grabFrame()
+          .then((imageBitmap) => {
+            const canvas = document.querySelector("#screenCanvas");
+            this.drawCanvas(canvas, imageBitmap);
+            var url = canvas.toDataURL("image/png");
+            this.$emit("imgCaptured", url);
+          })
+          // .then(() => {
+          //   //this.prevImgPromise = null;
+          // })
+          .catch((error) => console.error(error));
+
+        //this.prevImgPromise = imgPromise;
+      }
+    },
+    captureImage2() {
+      console.log(this.imageCapture.track.muted);
+
+      this.imageCapture
+        .takePhoto()
+        .then(function(blob) {
+          console.log("Took photo:", blob);
+        })
+        .catch(function(error) {
+          console.log("takePhoto() error: ", error);
+        });
+    },
     drawCanvas(canvas, img) {
       canvas.width = getComputedStyle(canvas).width.split("px")[0];
       canvas.height = getComputedStyle(canvas).height.split("px")[0];

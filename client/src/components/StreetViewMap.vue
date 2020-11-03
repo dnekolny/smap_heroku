@@ -30,27 +30,25 @@ export default {
   },
 
   methods: {
-    async initMap(apiKey) {
-      console.log(apiKey);
+    async initMap() {
       const googleMapApi = await GoogleMapsApiLoader({
-        apiKey: "AIzaSyDu3_Dr5AqqF2SwVpUyVeE_E7m3ZNUI49o",
+        apiKey: "",//"AIzaSyDu3_Dr5AqqF2SwVpUyVeE_E7m3ZNUI49o",
       });
       this.google = googleMapApi;
 
-      this.svService = new this.google.maps.StreetViewService();
-      this.panorama = new this.google.maps.StreetViewPanorama(
-        this.$refs.googleMap,
-        this.mapConfig
-      );
+      // this.svService = new this.google.maps.StreetViewService();
+      // this.panorama = new this.google.maps.StreetViewPanorama(
+      //   this.$refs.googleMap,
+      //   this.mapConfig
+      // );
 
-      this.panorama.addListener("position_changed", () => {
-        this.$emit(
-          "position-changed",
-          this.panorama.getPosition().lat(),
-          this.panorama.getPosition().lng()
-        );
-        console.log(this.panorama.getPosition().lat() + "");
-      });
+      // this.panorama.addListener("position_changed", () => {
+      //   this.$emit(
+      //     "position-changed",
+      //     this.panorama.getPosition().lat(),
+      //     this.panorama.getPosition().lng()
+      //   );
+      // });
     },
     changePosition(lat, lng) {
       var coord = this.mapConfig.position;
